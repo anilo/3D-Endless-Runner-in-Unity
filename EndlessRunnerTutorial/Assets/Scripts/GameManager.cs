@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+[DefaultExecutionOrder(int.MinValue)] //pls never do this in bigger project
 public class GameManager : MonoBehaviour {
 
     int score;
