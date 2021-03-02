@@ -6,7 +6,7 @@ namespace WGJ.Rooms
 {
     public class Obstacle : MonoBehaviour
     {
-        [SerializeField] private float[] m_AvailablePositions;
+        [SerializeField] private Vector3[] m_AvailablePositions;
 
         private Collider m_Collider;
         public Bounds Bounds => m_Collider.bounds;
@@ -23,7 +23,7 @@ namespace WGJ.Rooms
         {
             m_Player = player.GetComponentInChildren<PlayerMovement>();
             m_PlayerCollider = m_Player.GetComponentInChildren<Collider>();
-            transform.position = transform.forward * offset +transform.right * m_AvailablePositions[Random.Range(0, m_AvailablePositions.Length)];
+            transform.position = transform.forward * offset + m_AvailablePositions[Random.Range(0, m_AvailablePositions.Length)];
         }
 
         private void FixedUpdate()
@@ -40,14 +40,14 @@ namespace WGJ.Rooms
 
         private void CheckPlayerCollision()
         {
-            if (m_PlayerCollider)
-            {
-                if (Bounds.Intersects(m_PlayerCollider.bounds))
-                {
-                    m_Player.Die();
-                    enabled = false;
-                }
-            }
+            //if (m_PlayerCollider)
+            //{
+            //    if (Bounds.Intersects(m_PlayerCollider.bounds))
+            //    {
+            //        m_Player.Die();
+            //        enabled = false;
+            //    }
+            //}
         }
 
         private void CheckIfPassed()

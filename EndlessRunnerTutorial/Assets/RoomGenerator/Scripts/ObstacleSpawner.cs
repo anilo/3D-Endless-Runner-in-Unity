@@ -1,38 +1,42 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace WGJ.Rooms
 {
     public class ObstacleSpawner : MonoBehaviour
     {
+        private static event Action<ObstacleSpawner, Obstacle> s_OnObstacleSpawned;
+        private static Transform s_Container; //i hate statics but this will do for a game jam
+
         [SerializeField] private float m_FirstObstaclePosition;
         [SerializeField] private float m_InitialRange;
         
         [SerializeField] private int m_MinDistanceBetweenObstacles;
         [SerializeField] private int m_MaxDistanceBetweenObstacles;
+
         [SerializeField] private Obstacle[] m_Obstacles;
-        [SerializeField] private Transform m_Player;
 
-        [SerializeField] private RoomTicks m_RoomTicks;
+        private Obstacle m_NextToSpawn;
 
+        private PlayerMovement m_PlayerMovement;
         private float m_NextObstacle;
         private float m_DistanceToNextObstacle;
         private float m_LastPlayerZ;
+        private Transform m_Player => m_PlayerMovement.transform;
 
-        //private void OnEnable()
-        //{
-        //    m_RoomTicks.Tick += HandleTick;
-        //}
-
-        //private void HandleTick()
-        //{
-
-        //}
 
         private void Awake()
         {
-            for (float t = m_FirstObstaclePosition; t <= m_FirstObstaclePosition + m_InitialRange + m_MaxDistanceBetweenObstacles; t += CalculateDistanceToNext())
+            InitialiseContainer();
+            ConfigurePlayer();
+
+
+            for (float t = m_FirstObstaclePosition;
+                t <= m_FirstObstaclePosition + m_InitialRange + m_MaxDistanceBetweenObstacles;
+                t += CalculateDistanceToNext())
             {
                 CreateObstacle(t);
                 m_NextObstacle = t;
@@ -42,15 +46,71 @@ namespace WGJ.Rooms
             m_LastPlayerZ = m_Player.position.z;
         }
 
-        private void CreateObstacle(float position)
+        private void ConfigurePlayer()
         {
-            var obstacle = Instantiate(m_Obstacles[Random.Range(0, m_Obstacles.Length)]);
-            obstacle.Spawn(position, m_Player);
+            m_PlayerMovement = FindObjectOfType<PlayerMovement>();
         }
 
-        private int CalculateDistanceToNext()
+        private void InitialiseContainer()
         {
-            return Random.Range(m_MinDistanceBetweenObstacles, m_MaxDistanceBetweenObstacles);
+            if (!s_Container)
+            {
+                var go = new GameObject("__obstaclePool");
+                go.transform.SetParent(transform.parent);
+                go.SetActive(false);
+                s_Container = go.transform;
+            }
+        }
+
+        private void OnEnable()
+        {
+            s_OnObstacleSpawned += HandleObstacleSpawned;
+        }
+
+        private void OnDisable()
+        {
+            s_OnObstacleSpawned -= HandleObstacleSpawned;
+        }
+
+        private void HandleObstacleSpawned(ObstacleSpawner spawnedBy, Obstacle spawnedObstacle)
+        {
+            if (spawnedBy == this) return; //ignored spawned by self
+            AdjustSpawnIfOverlapping(spawnedObstacle);
+        }
+
+        private void AdjustSpawnIfOverlapping(Obstacle spawnedObstacle)
+        {
+            if (spawnedObstacle.Bounds.Intersects(m_NextToSpawn.Bounds))
+            {
+                m_DistanceToNextObstacle += spawnedObstacle.Bounds.extents.z * 2.0f;
+            }
+        }
+
+        private void CreateObstacle(float position)
+        {
+            Obstacle obstacle = GetNextObstacle();
+
+            m_NextToSpawn = CreateRandomInstance();
+            m_NextToSpawn.transform.SetParent(s_Container);
+
+            obstacle.transform.SetParent(null);
+            obstacle.Spawn(position, m_Player);
+            s_OnObstacleSpawned?.Invoke(this, obstacle);
+        }
+
+        private Obstacle GetNextObstacle()
+        {
+            Obstacle obstacle;
+            if (m_NextToSpawn)
+            {
+                obstacle = m_NextToSpawn;
+            }
+            else
+            {
+                obstacle = CreateRandomInstance();
+            }
+
+            return obstacle;
         }
 
         private void Update()
@@ -68,7 +128,9 @@ namespace WGJ.Rooms
 
             }
             m_LastPlayerZ = m_Player.position.z;
-
         }
+
+        private Obstacle CreateRandomInstance() => Instantiate(m_Obstacles[Random.Range(0, m_Obstacles.Length)]);
+        private int CalculateDistanceToNext() => Random.Range(m_MinDistanceBetweenObstacles, m_MaxDistanceBetweenObstacles);
     }
 }
