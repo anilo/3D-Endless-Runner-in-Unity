@@ -26,10 +26,13 @@ namespace WGJ.Rooms
         private float m_DistanceToNextObstacle;
         private float m_LastPlayerZ;
         private Transform m_Player => m_PlayerMovement.transform;
-
+        
+        private IDifficultyCurve m_DifficultyCurve;
 
         private void Awake()
         {
+            m_DifficultyCurve = GameManager.inst.GetComponentInChildren<IDifficultyCurve>();
+
             InitialiseContainer();
             ConfigurePlayer();
 
@@ -131,6 +134,10 @@ namespace WGJ.Rooms
         }
 
         private Obstacle CreateRandomInstance() => Instantiate(m_Obstacles[Random.Range(0, m_Obstacles.Length)]);
-        private int CalculateDistanceToNext() => Random.Range(m_MinDistanceBetweenObstacles, m_MaxDistanceBetweenObstacles);
+        private float CalculateDistanceToNext() => 
+            Mathf.Round(
+                Random.Range(m_MinDistanceBetweenObstacles, m_MaxDistanceBetweenObstacles)
+                / m_DifficultyCurve.DifficultyMultiplier)
+                ;
     }
 }

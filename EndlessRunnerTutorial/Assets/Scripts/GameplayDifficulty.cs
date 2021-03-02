@@ -3,7 +3,7 @@
 public class GameplayDifficulty : MonoBehaviour, IDifficultyCurve
 {
     public float DifficultyMultiplier => EvaluateDifficulty(Time.time);
-    public float SpeedMultiplier => EvaluateSpeed(Time.time);
+    public float CurrentSpeed => EvaluateSpeed(Time.time);
 
     [Header("Player movement")]
     [SerializeField] private float m_BaseSpeed;
@@ -32,6 +32,7 @@ public class GameplayDifficulty : MonoBehaviour, IDifficultyCurve
     public float EvaluateDifficulty(float time)
     {
         float min = 1.0f;
+        if (time <= 0) return min;
         float t = time / m_DifficultyTick;
         float tt = t * t;
         float a = m_SpikeFrequency, b = m_RaiseFactor, c = m_SpikeAmplitudeFactor;

@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BaseSpeed: 8
-  m_MaxSpeed: 32
+  m_MaxSpeed: 64
   m_SpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -70,8 +70,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_TimeToMaxSpeed: 60
-  m_DifficultyTick: 20
+  m_TimeToMaxSpeed: 180
+  m_DifficultyTick: 30
   m_RaiseFactor: 0.067
   m_SpikeAmplitudeFactor: 2
   m_SpikeFrequency: 1.39
@@ -89,6 +89,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CurrentSpeed: 0
   m_CurrentDifficulty: 0
-  m_DebugTime: 0
+  m_DebugTime: 1
   m_DebugSpeed: 0
   m_DebugDifficulty: 0
