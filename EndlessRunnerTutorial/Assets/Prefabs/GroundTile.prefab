@@ -241,7 +241,7 @@ Transform:
   m_GameObject: {fileID: 6682584033024778767}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1, z: 1.2}
   m_Children:
   - {fileID: 7620695648133272522}
   - {fileID: 7481032795112029572}
@@ -276,7 +276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df63c839f6b7eb4498a1d500eb59e2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstaclePrefab: {fileID: 3513120157906751832, guid: 02a82e7a718df8749aeb913af3ed8032,
-    type: 3}
   coinPrefab: {fileID: 681084056512101516, guid: 86f8181616978294497bf5163d10ff68,
+    type: 3}
+  obstaclePrefab: {fileID: 3513120157906751832, guid: 02a82e7a718df8749aeb913af3ed8032,
     type: 3}
