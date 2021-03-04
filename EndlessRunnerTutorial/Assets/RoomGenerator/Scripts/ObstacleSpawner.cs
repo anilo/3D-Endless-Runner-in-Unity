@@ -54,6 +54,8 @@ namespace WGJ.Rooms
             m_PlayerMovement = FindObjectOfType<PlayerMovement>();
         }
 
+        
+
         private void InitialiseContainer()
         {
             if (!s_Container)

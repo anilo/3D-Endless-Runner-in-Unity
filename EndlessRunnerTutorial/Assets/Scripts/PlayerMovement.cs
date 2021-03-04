@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour {
-
+    public event Action OnPlayerDeath;
 
     public float speed = 5;
     public AnimationCurve jumpTrajectory;
@@ -153,6 +153,10 @@ public class PlayerMovement : MonoBehaviour {
 
     public void Die()
     {
+        if (m_alive)
+        {
+            OnPlayerDeath?.Invoke();
+        }
         m_alive = false;
         // Restart the game
         Invoke("Restart", 2);
