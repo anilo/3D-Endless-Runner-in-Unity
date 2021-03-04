@@ -4,6 +4,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour {
+	
+    public AudioClip dieSound;
+    public AudioClip runSound;
+    public AudioClip rotateSound;
+    public AudioClip impactSound;
+    public AudioClip jumpSound;
+	
+    AudioSource audioSource;
+	
     public event Action OnPlayerDeath;
 
     public float speed = 5;
@@ -24,6 +33,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         m_currentLane = new Vector2(-2, 0);
         m_currentLaneIndex = 0;
+		audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -37,9 +47,16 @@ public class PlayerMovement : MonoBehaviour {
         transform.position = transform.position + forwardMove;
 
         if (Input.GetKeyDown(KeyCode.A))
+		{
+			PlaySound ("Rotate");
             SwitchLanes(-1);
+		}
         if (Input.GetKeyDown(KeyCode.D))
+		{			
+			PlaySound ("Rotate");
             SwitchLanes(1);
+		}
+			
 
         Vector3 targetpos = new Vector3(m_currentLane.x, m_currentLane.y, transform.position.z);
 
@@ -52,6 +69,7 @@ public class PlayerMovement : MonoBehaviour {
             isJumping = true;
             timeElapsed = 0f;
             timePeriod = 1f;
+			PlaySound("Jump");
         }
         if (isJumping)
         {
@@ -156,6 +174,7 @@ public class PlayerMovement : MonoBehaviour {
         if (m_alive)
         {
             OnPlayerDeath?.Invoke();
+			PlaySound ("Die");
         }
         m_alive = false;
         // Restart the game
@@ -166,4 +185,28 @@ public class PlayerMovement : MonoBehaviour {
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+	
+	void PlaySound (String playerEffect)
+	{
+		Debug.Log("playng sound:" + playerEffect);
+		switch(playerEffect)
+		{
+			case "Run":
+				audioSource.PlayOneShot(runSound, 0.7F);
+				break;
+			case "Rotate":
+				audioSource.PlayOneShot(rotateSound, 0.7F);
+				break;
+			case "Impact":
+				audioSource.PlayOneShot(impactSound, 0.7F);
+				break;
+			case "Die":
+				audioSource.PlayOneShot(dieSound, 0.7F);
+				break;
+			case "Jump":
+				audioSource.PlayOneShot(jumpSound, 0.7F);
+				break;
+		}
+		
+	}
 }
