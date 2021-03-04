@@ -7,8 +7,6 @@ public class PlayerMovement : MonoBehaviour {
 
 
     public float speed = 5;
-    [SerializeField] float horizontalMultiplier = 2;
-    public float speedIncreasePerPoint = 0.1f;
     public AnimationCurve jumpTrajectory;
 
     private float horizontalInput;
