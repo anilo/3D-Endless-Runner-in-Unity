@@ -2,8 +2,8 @@
 
 public class GameplayDifficulty : MonoBehaviour, IDifficultyCurve
 {
-    public float DifficultyMultiplier => EvaluateDifficulty(Time.time);
-    public float CurrentSpeed => EvaluateSpeed(Time.time);
+    public float DifficultyMultiplier => EvaluateDifficulty(Time.timeSinceLevelLoad);
+    public float CurrentSpeed => EvaluateSpeed(Time.timeSinceLevelLoad);
 
     [Header("Player movement")]
     [SerializeField] private float m_BaseSpeed;
