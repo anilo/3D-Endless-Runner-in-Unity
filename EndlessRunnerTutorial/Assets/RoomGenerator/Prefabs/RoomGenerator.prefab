@@ -49,6 +49,7 @@ MonoBehaviour:
   m_MaxDistanceBetweenObstacles: 50
   m_Obstacles:
   - {fileID: -7817059482774741334, guid: c0a21e08a0fe5d4468f53664833a09d7, type: 3}
+  - {fileID: 2361241673564723698, guid: dfee87d7fa7409e4aab4bb39c7d8f9cb, type: 3}
 --- !u!1 &5002739169897423238
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,3 +201,4 @@ MonoBehaviour:
   - {fileID: 2361241673564723698, guid: 3cb4219ca335e414b95693e570f39195, type: 3}
   - {fileID: 1925488196352778333, guid: e96781da4bdb8714c8cfb67936d86f1a, type: 3}
   - {fileID: -7817059482774741334, guid: 7de72290dee618147ae3e241e3c233af, type: 3}
+  - {fileID: 2361241673564723698, guid: e17069c38d697764696556252d60bfde, type: 3}

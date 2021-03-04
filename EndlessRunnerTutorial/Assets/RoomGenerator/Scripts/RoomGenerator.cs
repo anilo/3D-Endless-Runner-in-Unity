@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace WGJ.Rooms
@@ -38,6 +39,12 @@ namespace WGJ.Rooms
         private void OnEnable()
         {
             m_InitialPosition = m_PlayerPosition;
+            m_Player.OnPlayerDeath += HandlePlayerDeath;
+        }
+
+        private void OnDisable()
+        {
+            m_Player.OnPlayerDeath -= HandlePlayerDeath;
         }
 
         private void Update()
@@ -51,5 +58,7 @@ namespace WGJ.Rooms
                 m_InitialPosition += m_RoomLength * transform.forward;
             }
         }
+
+        private void HandlePlayerDeath() => enabled = false;
     }
 }
